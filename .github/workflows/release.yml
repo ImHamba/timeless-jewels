@@ -2,8 +2,8 @@ name: release
 
 on:
   push:
-    tags:
-      - v*
+    branches:
+      - main
 
 env:
   NODE_VERSION: "18"
