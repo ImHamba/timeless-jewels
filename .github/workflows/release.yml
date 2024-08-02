@@ -5,35 +5,23 @@ on:
     branches:
       - main
 
-env:
-  NODE_VERSION: "18"
-  PNPM_VERSION: "8.5.1"
-  GO_VERSION: "1.21.0"
-
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: ${{ env.GO_VERSION }}
-          stable: false
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-go@v5
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          go-version-file: 'go.mod'
 
-      - name: Check out
-        uses: actions/checkout@v2
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2.2.1
+      - uses: actions/setup-node@v4
         with:
-          version: ${{ env.PNPM_VERSION }}
-          run_install: |
-            - cwd: frontend
+          node-version-file: 'frontend/.nvmrc'
+
+      - name: Enable corepack
+        run: corepack enable
 
       - name: Build wasm
         run: go build -ldflags="-s -w" -v -o frontend/static/calculator.wasm ./wasm
@@ -44,11 +32,11 @@ jobs:
       - name: Build frontend
         working-directory: frontend
         run: |
+          pnpm install
           pnpm run build
           ls -lah build
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./frontend/build

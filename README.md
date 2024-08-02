@@ -11,3 +11,16 @@ Original Hosted Version: [https://vilsol.github.io/timeless-jewels](https://vils
 Modified version: [https://imhamba.github.io/timeless-jewels](https://imhamba.github.io/timeless-jewels)
 
 Uses data extracted with https://github.com/Vilsol/go-pob-data
+
+## Updates to new leagues
+
+Whenever a new league is coming, the passive tree might get updated.
+**But** it is not guaranteed to contain correct data until a game download is available.
+
+Specifically, this project depends on the following data tables:
+
+* Alternate Passive Additions
+* Alternate Passive Skills
+* Passive Skills
+* Stats
+* Translations
